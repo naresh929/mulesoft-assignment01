@@ -1,0 +1,57 @@
+#%RAML 1.0
+title: Accounts API
+
+/accounts:
+  get:
+    description: Retrieves a list of all accounts based on the given query parameters
+    headers:
+      Requester-ID:
+        type: string
+        required: true
+    queryParameters:
+      type:
+        type: string
+        required: true
+        enum:
+          - personal
+          - business
+      name:
+        type: string
+        required: false
+      country:
+        type: string
+        required: false
+    responses:
+      200:
+        body:
+          application/json:
+            type: 
+            examples:
+              output: !include examples/accountsExample.raml
+      400:
+        body:
+          application/json:
+            example:
+              message: Error retrieving data from the Account database
+  post:
+    description: Creates/Adds a new Account to the system based on a given array of Account objects
+    headers:
+      Requester-ID:
+        type: string
+        required: true
+    body:
+      application/json:
+        type: Account[]
+        examples:
+          output: !include examples/accountsNoIdExample.raml
+    responses:
+      201:
+        body:
+          application/json:
+            example:
+              message: Accounts created (but not really)
+      400:
+        body:
+          application/json:
+            example:
+              message: Error creating accounts. Please check the JSON object and make sure it's valid.
